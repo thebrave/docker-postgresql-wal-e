@@ -100,6 +100,7 @@ if [[ ! -d ${PG_DATADIR} ]]; then
   if [[ -f "${PG_HOME}/restore" ]]; then
     echo "Asked to restore database"
     sudo -Hu ${PG_USER} envdir /etc/wal-e.d/env wal-e backup-fetch ${PG_HOME} LATEST
+    rm ${PG_HOME}/restore
   elif [[ ${PSQL_MODE} == slave || ${PSQL_MODE} == snapshot ]]; then
     echo "Replicating database..."
     if [[ ${PSQL_MODE} == snapshot ]]; then
