@@ -12,7 +12,7 @@ RUN apt-get install -y \
   libevent-dev python-gevent python-netifaces \
   lzop \
   pv \
-  postgresql-client
+  postgresql-client \
   python-gevent autotools-dev python-all-dev libevent-dev \
   python-greenlet python-sphinx python-all-dbg \
   && apt-get clean \
