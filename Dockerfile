@@ -1,4 +1,4 @@
-FROM thebrave/postgresql:latest
+FROM thebrave/rpi-postgresql:latest
 MAINTAINER Jean Berniolles <jean@berniolles.fr>
 
 # Install WAL-E dependencies
@@ -13,11 +13,11 @@ RUN apt-get install -y \
   lzop \
   pv \
   postgresql-client
-
-RUN apt-get install -y python-gevent autotools-dev python-all-dev libevent-dev \
-  python-greenlet python-sphinx python-all-dbg
-
-RUN echo -n > /var/lib/apt/extended_states
+  python-gevent autotools-dev python-all-dev libevent-dev \
+  python-greenlet python-sphinx python-all-dbg \
+  && apt-get clean \
+	&& echo -n > /var/lib/apt/extended_states \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN pip install virtualenv
 
@@ -38,7 +38,5 @@ RUN echo "archive_mode = on" >> /etc/postgresql/9.4/main/postgresql.conf
 RUN echo "archive_command = 'envdir /etc/wal-e.d/env wal-e wal-push %p'" >> /etc/postgresql/9.4/main/postgresql.conf
 RUN echo "archive_timeout = 60" >> /etc/postgresql/9.4/main/postgresql.conf
 
-# Remove build dependencies and clean up APT and temporary files
-RUN apt-get remove --purge -y wget && \
-  apt-get clean &&\
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY start /start
+RUN chmod 755 /start
